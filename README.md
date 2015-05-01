@@ -39,7 +39,6 @@ title = "{Supersparse Linear Integer Models for Optimized Medical Scoring System
  archivePrefix = "arXiv",  
  eprint = {1502.04269},  
  primaryClass = "stat.ML",  
- keywords = {Statistics - Machine Learning, Computer Science - Discrete Mathematics, Computer Science - Learning, Statistics - Applications, Statistics - Methodology},  
  year = 2015,  
  url = {http://http://arxiv.org/abs/1502.04269/}  
 }
