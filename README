@@ -1,8 +1,9 @@
-SLIM is a 
+SLIM is a machine learning method for scoring systems using integer programming. For more on SLIM, check out:
 
+[Supersparse Linear Integer Models for Optimized Medical Scoring Systems]
+http://arxiv.org/abs/1502.04269
 
-
-The package works with MATLAB 2014b and the IBM ILOG CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
+This package works with MATLAB 2014b and the IBM ILOG CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
 
 We are currently working on developing a version of SLIM for Python + CPLEX, and a completely open source version using R.
 
