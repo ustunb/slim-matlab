@@ -6,9 +6,9 @@
 
 ![SLIM scoring system for the mushrooms dataset](https://github.com/ustunb/slim_for_matlab/blob/master/images/slim_mushroom.png)
 
-SLIM is a method to create scoring systems from data (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can be customized to satisfy multiple hard constraints (e.g. min/max limits on class-based accuracy and/on model size) **without any parameter tuning**.
+SLIM is a method to create data-driven scoring systems (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can directly satisfy multiple hard constraints **without any parameter tuning** (e.g. limits on the true positive rate, the false rate, and/or the model size).
 
-SLIM scoring systems are typically just as (if not more) accurate and/or sparse compared to models produced by popular classification methods such as [glmnet](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html). However, they will usually take more time to create since SLIM works by solving an [integer programming](http://en.wikipedia.org/wiki/Integer_programming) problem (e.g. minutes instead of seconds, depending on the size of the dataset). Note, however, that SLIM may not be appropriate for large-scale datasets (N > 100'000).
+SLIM scoring systems are typically just as (if not more) accurate and/or sparse compared to models produced by popular classification methods such as [glmnet](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html). However, they may take more time to create since SLIM works by solving an [integer programming](http://en.wikipedia.org/wiki/Integer_programming) problem. Note that SLIM is not appropriate for large-scale datasets (N > 100'000).
 
 # Installation
 
