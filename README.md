@@ -1,4 +1,4 @@
-``slim_for_matlab`` is a package to create SLIM scoring systems using MATLAB and IBM ILOG CPLEX Optimization Studio.
+``slim_for_matlab`` is a package to create scoring systems using MATLAB and IBM ILOG CPLEX Optimization Studio.
 
 # Introduction
 
@@ -12,33 +12,33 @@ SLIM scoring systems are typically just as (if not more) accurate and/or sparse 
 
 # Installation
 
-``slim_for_matlab`` was developed for MATLAB 2014b and the IBM ILOG CPLEX V12.6. The package may work with versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
+``slim_for_matlab`` was developed for MATLAB 2014b and the IBM ILOG CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
 
 ## Installing CPLEX 
 
-The *IBM ILOG CPLEX Optimization Studio* is a commericial mathematical programming solver that can be called from MATLAB. It can be obtained freely via the IBM Academic Initiative.
+The *IBM ILOG CPLEX Optimization Studio* is a commericial mathematical programming solver that can be called from MATLAB. It is free for students, research professionals, and faculty members via the IBM Academic Initiative.
 
 To setup latest version of the IBM ILOG CPLEX Optimization Studio on your computer, you should:
 
 1. Join the [IBM Academic Initiative](http://www-304.ibm.com/ibm/university/academic/pub/page/mem_join). Note that it may take up to a week to obtain approval.
 2. Download *IBM ILOG CPLEX Optimization Studio V12.6.1* from the [software catalog](https://www-304.ibm.com/ibm/university/academic/member/softwaredownload)
-3. Install the *IBM ILOG CPLEX Optimization Studio*. Note that Mac/Unix users will [need to install a .bin file](http://www-01.ibm.com/support/docview.wss?uid=swg21444285).
-4. Add the CPLEX for MATLAB API to the MATLAB path using ``addpath`` [as shown here](http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/MATLAB/topics/gs_install.html)
+3. Install the file on your computer. Mac/Unix users will [need to install a .bin file](http://www-01.ibm.com/support/docview.wss?uid=swg21444285).
+4. Add the CPLEX MATLAB API to the MATLAB path using the ``pathtool`` or ``addpath`` [as shown here](http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/MATLAB/topics/gs_install.html)
 
 Please check the [CPLEX user manual](http://www-01.ibm.com/support/knowledgecenter/SSSA5P/welcome) or the [CPLEX forums](https://www.ibm.com/developerworks/community/forums/html/forum?id=11111111-0000-0000-0000-000000002059) if you have problems installing CPLEX.
 
-# Citation and References
+# Citation 
 
-If you use SLIM for academic research, please cite the following paper:
-
-@ARTICLE{,
- title = "{Supersparse Linear Integer Models for Optimized Medical Scoring Systems}",
- author = {{Ustun}, B. and {Rudin}, C.},
- journal = {ArXiv e-prints},
- archivePrefix = "arXiv",
- eprint = {1502.04269},
- primaryClass = "stat.ML",
- keywords = {Statistics - Machine Learning, Computer Science - Discrete Mathematics, Computer Science - Learning, Statistics - Applications, Statistics - Methodology},
- year = 2015,
- url = {http://http://arxiv.org/abs/1502.04269/}
+If you use SLIM for academic research, please cite the following paper:  
+     
+@ARTICLE{,  
+ title = "{Supersparse Linear Integer Models for Optimized Medical Scoring Systems}",  
+ author = {{Ustun}, B. and {Rudin}, C.},  
+ journal = {ArXiv e-prints},  
+ archivePrefix = "arXiv",  
+ eprint = {1502.04269},  
+ primaryClass = "stat.ML",  
+ keywords = {Statistics - Machine Learning, Computer Science - Discrete Mathematics, Computer Science - Learning, Statistics - Applications, Statistics - Methodology},  
+ year = 2015,  
+ url = {http://http://arxiv.org/abs/1502.04269/}  
 }
