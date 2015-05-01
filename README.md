@@ -31,9 +31,10 @@ Please check the [CPLEX user manual](http://www-01.ibm.com/support/knowledgecent
 
 If you use SLIM for academic research, please cite [the following paper](http://http//arxiv.org/abs/1502.04269/)!  
      
-``@ARTICLE{,  
- title = "{Supersparse Linear Integer Models for Optimized Medical Scoring Systems}",  
- author = {{Ustun}, B. and {Rudin}, C.},  
+```
+@ARTICLE{,  
+title = "{Supersparse Linear Integer Models for Optimized Medical Scoring Systems}",
+   author = {{Ustun}, B. and {Rudin}, C.},  
  journal = {ArXiv e-prints},  
  archivePrefix = "arXiv",  
  eprint = {1502.04269},  
@@ -41,4 +42,6 @@ If you use SLIM for academic research, please cite [the following paper](http://
  keywords = {Statistics - Machine Learning, Computer Science - Discrete Mathematics, Computer Science - Learning, Statistics - Applications, Statistics - Methodology},  
  year = 2015,  
  url = {http://http://arxiv.org/abs/1502.04269/}  
-}``
+}
+```
+
