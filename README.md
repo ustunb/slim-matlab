@@ -1,32 +1,11 @@
-SLIM is a machine learning method for scoring systems using integer programming. For more on SLIM, check out:
+SLIM is a machine learning method for creating *scoring systems.* These are simple classification models that allow users to make a prediction by adding, subtracting and multiplying a few meaningful numbers.
 
-[Supersparse Linear Integer Models for Optimized Medical Scoring Systems]
-http://arxiv.org/abs/1502.04269
+![SLIM scoring system for the mushrooms dataset](https://github.com/ustunb/slim_for_matlab/images/slim_mushroom.png)
 
-This package works with MATLAB 2014b and the IBM ILOG CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
+SLIM produces scoring systems by solving an integer programming problem. See our paper [here for further details](http://arxiv.org/abs/1502.04269).
 
-We are currently working on developing a version of SLIM for Python + CPLEX, and a completely open source version using R.
+slim_for_matlab is a toolbox to create these SLIM scoring systems in MATLAB. The toolbox uses MATLAB 2014b and the IBM ILOG CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
 
---------------------------------------------------------------------------------
-Citations and References
---------------------------------------------------------------------------------
-
-To cite SLIM, please cite:
-
-@ARTICLE{,
-   title = "{Supersparse Linear Integer Models for Optimized Medical Scoring Systems}",
-   author = {{Ustun}, B. and {Rudin}, C.},
-   journal = {ArXiv e-prints},
-   archivePrefix = "arXiv",
-   eprint = {1502.04269},
-   primaryClass = "stat.ML",
-   keywords = {Statistics - Machine Learning, Computer Science - Discrete Mathematics, Computer Science - Learning, Statistics - Applications, Statistics - Methodology},
-   month = April,
-   year = 2015,
-   url = {http://http://arxiv.org/abs/1502.04269/}
-}
-
---------------------------------------------------------------------------------
 Installing IBM ILOG CPLEX Optimization Studio V12.6
 --------------------------------------------------------------------------------
 
@@ -56,3 +35,22 @@ http://www-01.ibm.com/support/knowledgecenter/SSSA5P/welcome
 or ask your question on the CPLEX forums:
 
 https://www.ibm.com/developerworks/community/forums/html/forum?id=11111111-0000-0000-0000-000000002059
+
+
+Citations
+--------------------------------------------------------------------------------
+
+To cite SLIM, please cite:
+
+@ARTICLE{,
+   title = "{Supersparse Linear Integer Models for Optimized Medical Scoring Systems}",
+   author = {{Ustun}, B. and {Rudin}, C.},
+   journal = {ArXiv e-prints},
+   archivePrefix = "arXiv",
+   eprint = {1502.04269},
+   primaryClass = "stat.ML",
+   keywords = {Statistics - Machine Learning, Computer Science - Discrete Mathematics, Computer Science - Learning, Statistics - Applications, Statistics - Methodology},
+   month = April,
+   year = 2015,
+   url = {http://http://arxiv.org/abs/1502.04269/}
+}
