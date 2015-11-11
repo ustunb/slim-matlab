@@ -21,7 +21,7 @@ example_dir = [repo_dir, 'examples/'];
 addpath(code_dir);
 
 data_name = 'breastcancer';
-data_file = [example_dir, data_name, '_processed.mat'];
+data_file = [example_dir, data_name, 'processed_dataset.mat'];
 load(data_file)
 
 %% Example 1: Quick Start

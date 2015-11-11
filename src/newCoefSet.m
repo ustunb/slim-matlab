@@ -1,7 +1,7 @@
 function CoefSet = newCoefSet(variables_names)
 %Create a default coefSet from a P x 1 cell of variable_names
 %the default coefSet restricts coefficients to integers in [-10,10]
-%it can customized directly, or using the setter functions 
+%it can customized directly, or using the setter functions
 %setCoefField(..) and setCoefSetField(...)
 %
 %fields of the coefSet object include:
@@ -33,7 +33,7 @@ function CoefSet = newCoefSet(variables_names)
 %           in order to be included in the SLIM classifier (i.e. have a non-zero
 %           coefficient)
 %
-%Author:      Berk Ustun 
+%Author:      Berk Ustun
 %Contact:     ustunb@mit.edu
 %Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
 %Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
