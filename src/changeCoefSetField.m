@@ -14,9 +14,10 @@ function coefSet = changeCoefSetField(coefSet, variable_names, property_name, pr
 %
 %property_value limited to legal values of the fields above
 %
-%Author:    Berk Ustun, 2015
-%Reference: SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
-%GitHub Repo: <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>.
+%Author:      Berk Ustun 
+%Contact:     ustunb@mit.edu
+%Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
+%Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
 warning('off', 'verbose');
 warning('off', 'backtrace');

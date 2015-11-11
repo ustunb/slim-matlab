@@ -33,9 +33,10 @@ function CoefSet = newCoefSet(variables_names)
 %           in order to be included in the SLIM classifier (i.e. have a non-zero
 %           coefficient)
 %
-%Author:    Berk Ustun, 2015
-%Reference: SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
-%GitHub Repo: <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>.
+%Author:      Berk Ustun 
+%Contact:     ustunb@mit.edu
+%Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
+%Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
 P = length(variables_names);
 

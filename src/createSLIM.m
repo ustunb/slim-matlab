@@ -26,9 +26,10 @@ function varargout = createSLIM(input)
 %neg_err_min    min error rate of desired scoring system on -ve examples
 %neg_err_max    max error rate of desired scoring system on +ve examples
 %
-%Author:    Berk Ustun, 2015
-%Reference: SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
-%GitHub Repo: <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>.
+%Author:      Berk Ustun 
+%Contact:     ustunb@mit.edu
+%Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
+%Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
 input = setdefault(input, 'display_warnings', true);
 if input.display_warnings

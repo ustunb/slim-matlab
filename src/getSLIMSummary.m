@@ -20,9 +20,10 @@ function results = getSLIMSummary(IP, info)
 %solution_pool       struct with additional feasible scoring systems 
 %model_string        print-out of the best scoring system found by CPLEX so far
 %
-%Author:    Berk Ustun, 2015
-%Reference: SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
-%GitHub Repo: <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>.
+%Author:      Berk Ustun 
+%Contact:     ustunb@mit.edu
+%Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
+%Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
 
 Solution   = IP.Solution;

@@ -5,9 +5,10 @@ function property_values = getCoefSetField(coefSet,property_name)
 %property_name  name of the property whose value we want to get
 %               valid properties are 'name','lb','ub','type', 'values','sign','C_0j'
 %
-%Author:    Berk Ustun, 2015
-%Reference: SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
-%GitHub Repo: <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>.
+%Author:      Berk Ustun 
+%Contact:     ustunb@mit.edu
+%Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
+%Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
 switch property_name
     

@@ -1,8 +1,9 @@
 % SLIM quick start script. This script shows how to create scoring systems using SLIM
 %
-%Author:    Berk Ustun, 2015
-%Reference: SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
-%GitHub Repo: <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>.
+%Author:      Berk Ustun 
+%Contact:     ustunb@mit.edu
+%Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
+%Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
 %% Clear 
 
@@ -14,17 +15,18 @@ dbstop if error;
 
 %% Load Breastcancer Dataset
 
-%run from the slim_for_matlab directory
-slim_dir    = cd('/Users/berk/Desktop/Dropbox (MIT)/Research/SLIM/Toolboxes/slim_for_matlab/src/';
-example_dir = '/Users/berk/Desktop/Dropbox (MIT)/Research/SLIM/Toolboxes/slim_for_matlab/examples/';
-addpath(slim_dir)
-%data_name = 'udisease_nephritis'; %mammo/u
+repo_dir    = [cd,'/']; %run from the slim_for_matlab directory
+code_dir    = [repo_dir, 'src/'];
+example_dir = [repo_dir, 'examples/'];
+addpath(code_dir);
+
 data_name = 'breastcancer';
 data_file = [example_dir, data_name, '_processed.mat'];
 load(data_file)
-[N,P]                               = size(X);
 
 %% Example 1: Quick Start
+
+[N,P] = size(X);
 
 %set SLIM input struct()
 input                               = struct();
