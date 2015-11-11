@@ -2,11 +2,11 @@
 
 ## Introduction
 
-*Scoring systems* are simple classification models that allow users to make a prediction by adding, subtracting and multiplying a few meaningful numbers. See, for example, the following scoring system produced for the [mushroom dataset](http://archive.ics.uci.edu/ml/datasets/Mushroom).
+*Scoring systems* are simple classification models that let users make quick predictions by adding, subtracting and multiplying a few numbers:
 
 ![SLIM scoring system for the mushrooms dataset](https://github.com/ustunb/slim_for_matlab/blob/master/images/slim_mushroom.png)
 
-SLIM is a method to create data-driven scoring systems (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can directly satisfy multiple hard constraints **without any parameter tuning** (e.g. limits on the true positive rate, the false rate, and/or the model size).
+SLIM is a method to learn data-driven scoring systems (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can directly satisfy multiple hard constraints **without parameter tuning** (e.g. limits on the true positive rate, the false positive rate, and/or the model size).
 
 SLIM scoring systems are typically just as (if not more) accurate and/or sparse compared to models produced by popular classification methods such as [glmnet](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html). However, they may take more time to create since SLIM works by solving an [integer programming](http://en.wikipedia.org/wiki/Integer_programming) problem. Note that SLIM is not appropriate for large-scale datasets (N > 100'000).
 
@@ -29,18 +29,21 @@ Please check the [CPLEX user manual](http://www-01.ibm.com/support/knowledgecent
 
 ## Citation 
 
-If you use SLIM for academic research, please cite [the following paper](http://http//arxiv.org/abs/1502.04269/)!  
+If you use SLIM for academic research, please cite [our paper](http://http//arxiv.org/abs/1502.04269/)!  
      
 ```
-@ARTICLE{,  
-title = "{Supersparse Linear Integer Models for Optimized Medical Scoring Systems}",
-   author = {{Ustun}, B. and {Rudin}, C.},  
- journal = {ArXiv e-prints},  
- archivePrefix = "arXiv",  
- eprint = {1502.04269},  
- primaryClass = "stat.ML",  
- year = 2015,  
- url = {http://http://arxiv.org/abs/1502.04269/}  
+@article{ustun2015slim
+year={2015},
+issn={0885-6125},
+journal={Machine Learning},
+doi={10.1007/s10994-015-5528-6},
+title={Supersparse linear integer models for optimized medical scoring systems},
+url={http://dx.doi.org/10.1007/s10994-015-5528-6},
+publisher={Springer US},
+keywords={Medical scoring systems; Discrete linear classification; Integer programming; 0–1 Loss; Sparsity; Interpretability; Sleep apnea; Supervised Classification},
+author={Ustun, Berk and Rudin, Cynthia},
+pages={1-43},
+language={English}
 }
 ```
 
