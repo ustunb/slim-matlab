@@ -1,18 +1,17 @@
 function varargout = createSLIM(input)
-%Creates a Cplex integer program whose solution is a SLIM scoring system
-%requires a working installation of IBM CPLEX
+%Creates a Cplex IP that can be solved to yield a SLIM scoring system
+%Requires a working installation of CPLEX.
 %
 %input is a struct that has to contain the following required fields:
 %
-%X          N x P matrix of feature values (should contain a column of 1s to model an intercept)
-%Y          N x 1 vector of labels (-1 or 1 only)
-%X_names    P x 1 cell array of strings containing the names of the feature values
+%Y          Nx1 vector of labels (-1 or 1 only)
+%X          NxP matrix of feature values (should include a column of 1s to acts as an intercept
+%X_names    Px1 cell array of strings containing the names of the feature values
 %           To stay safe, label the intercept as '(Intercept)'
 %
-%Y_name     string or cell array containing the outcome variable name
+%input can also contain the following optional fields:
 %
-%in addition, input can also contain the following optional fields:
-%
+%Y_name         string/cell array containing the outcome variable name
 %coefSet        coefSet object (set as default coefSet if not specified)
 %C_0            L0-regularization parameter; must be a value between [0,1]
 %w_pos          misclassification cost for positive labels
@@ -31,6 +30,9 @@ function varargout = createSLIM(input)
 %Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
 %Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
+%% Check Inputs
+
+%warning flag
 input = setdefault(input, 'display_warnings', true);
 if input.display_warnings
     print_warning = @(warning_msg) disp([]);
@@ -38,8 +40,6 @@ else
     print_warning = @(warning_msg) fprintf('%s\n', warning_msg);
 end
 
-
-%% Check Inputs
 %check data
 assert(isfield(input,'X'), 'input must contain X matrix')
 assert(isfield(input,'Y'), 'input must contain Y vector')
@@ -97,7 +97,6 @@ elseif isfield(input,'X_names') && isfield(input, 'coefSet')
     else
         X_names   = input.X_names;
     end
-    
     coefSet     = checkCoefSet(input.coefSet);
     
 end
@@ -138,27 +137,23 @@ custom_values       = cellfun(@(Lj) Lj(~isnan(Lj)), {coefSet(:).values}', 'Unifo
 custom_values       = cellfun(@(Lj) setdiff(Lj,0), custom_values, 'UniformOutput',false);
 
 %determine variable types
-types           = {coefSet(:).type}';
+types           = getCoefSetField(coefSet,'type');
 custom_ind      = strcmp(types,'custom');
-int_type_ind    = zeros(1,P);
+int_type_ind    = strcmp(types,'integer');
 cts_type_ind    = zeros(1,P);
 for j = 1:P
-    switch types{j}
-        case 'integer'
-            int_type_ind(j) = 1;
-        case 'custom'
-            if ~isnan(coefSet(j).values)
-                if all(coefSet(j).values==floor(coefSet(j).values))
-                    int_type_ind(j) = 1;
-                else
-                    cts_type_ind(j) = 1;
-                end
+    if strcmp(types{j},'custom')
+        if ~isnan(coefSet(j).values)
+            if all(coefSet(j).values==floor(coefSet(j).values))
+                int_type_ind(j) = 1;
+            else
+                cts_type_ind(j) = 1;
             end
+        end
     end
 end
 int_type_ind = logical(int_type_ind);
 cts_type_ind = logical(cts_type_ind);
-
 
 %setup class-based weights
 assert(input.w_pos > 0,'w_pos must be a positive numeric value');
@@ -189,9 +184,10 @@ end
 L0_reg_ind  = C_0 > 0;
 L1_reg_ind  = L0_reg_ind;
 
-C_1         = input.C_1;
-if isnan(C_1)
-    C_1   = 0.5.*min([w_pos/N,w_neg/N, min(C_0(L1_reg_ind))])./(sum(lambda_max));
+if ~isnan(input.C_1)
+    C_1 = input.C_1;
+else
+    C_1 = 0.5.*min([w_pos/N,w_neg/N, min(C_0(L1_reg_ind))])./(sum(lambda_max));
 end
 C_1                 = C_1.*ones(P,1);
 C_1(~L1_reg_ind)    = 0;
@@ -199,7 +195,6 @@ C_1(~L1_reg_ind)    = 0;
 %Loss Constraint Parameters
 epsilon  = input.epsilon;
 M        = input.M(:);
-
 if isnan(M)
     M = sum(abs(X*lambda_max),2)+1.1*epsilon;
 end

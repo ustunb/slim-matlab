@@ -26,10 +26,7 @@ switch property_name
         
     case 'values'
         property_values = {coefSet.values}';
-        
-    case 'nvalues'
-        property_values = cellfun(@(x) length(x(~isnan(x))), {coefSet.values}');
-        
+            
     case 'sign'
         property_values = [coefSet.sign]';
         

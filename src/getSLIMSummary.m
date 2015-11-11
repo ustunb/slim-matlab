@@ -25,11 +25,6 @@ function results = getSLIMSummary(IP, info)
 %Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
 %Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
-
-Solution   = IP.Solution;
-
-%Initialize Fields (Solution may not exist)
-
 results.coefficients        = NaN;
 results.scores              = NaN;
 results.predictions         = NaN;
@@ -49,7 +44,8 @@ results.solution_pool       = struct('solution_pool',[],'objvals',[]);
 results.model_string        = '';
 
 %Get Model + Process Model Based Results
-if isfield(Solution,'x')
+Solution = IP.Solution;
+if isfield(Solution,'x') %CPLEX may not have found a feasible solution yet
     
     coefs      = Solution.x(info.indices.lambdas);
     coefs      = coefs(:);
@@ -92,9 +88,7 @@ try results.lowerbound = Solution.bestobjval; end
 try results.integrality_gap = Solution.miprelgap; end
 try results.node_count = Solution.nodecnt; end
 try results.simplex_iterations = Solution.mipitcnt; end
-
 try
-    
     solution_pool = Solution.pool.solution;
     pooled_solutions = {solution_pool.x};
     solution_pool.solutions = arrayfun(@(n) pooled_solutions(indices.lambdas)', 1:length(pooled_solutions), 'UniformOutput', false);
@@ -102,7 +96,6 @@ try
     solution_pool = rmfield(solution_pool,'ax');
     solution_pool = rmfield(solution_pool,'objval');
     results.solution_pool = solution_pool;
-    
 end
 
 end

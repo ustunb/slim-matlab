@@ -26,11 +26,15 @@ print_warning = @(msg) warning(msg);
 if ischar(variable_names) && all(strcmp(variable_names,'all'))
     variable_names = getCoefSetField(coefSet,'name');
 end
+if ischar(variable_names)
+    variable_names = {variable_names};
+end
+
 
 for n = 1:length(variable_names)
     
     variable_name = variable_names{n};
-    coef_index = strfind(getCoefSetField(coefSet,'name'), variable_name);
+    coef_index = find(strcmp(getCoefSetField(coefSet,'name'), variable_name));
     
     if isempty(coef_index)
         error('could not find coef with name %s in coefSet', variable_name);

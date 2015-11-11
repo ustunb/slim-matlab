@@ -51,7 +51,7 @@ input.C_0                          = 0.01;
 
 %coefficient set
 CoefSet                            = newCoefSet(X_names);  %by default each coefficient lambda_j is an integer from -10 to 10
-setCoefField(CoefSet, '(Intercept)', 'C_0j', 0)             %the regularization penalty for the intercept should be set to 0 manually
+changeCoefSetField(CoefSet, '(Intercept)', 'C_0j', 0)             %the regularization penalty for the intercept should be set to 0 manually
 
 %simple operational constraints (no need to set these)
 %input.L0_min                        = 0;
@@ -119,18 +119,18 @@ summary = getSLIMSummary(slim_IP, slim_info);
 coefSet = newCoefSet(X_names);
 
 %modify field for all coefficients in the coefSet
-coefSet = setCoefSetField(coefSet,'ub', 5); %set upperbound to 5
-coefSet = setCoefSetField(coefSet,'lb', -5); %set lowerbound to -5
+coefSet = changeCoefSetField(coefSet,'all', 'ub', 5); %set upperbound to 5
+coefSet = changeCoefSetField(coefSet,'all', 'lb', -5); %set lowerbound to -5
 
 %restrict all coefficients to a custom discrete set
+coefSet = changeCoefSetField(coefSet,'all', 'values', [-5,-2.5,-1,0,1,2.5,5]);  
 %make sure set contains 0; otherwise,set C_0j = 0 to prevent unnecessary L0-regularization for feature j 
-coefSet = setCoefSetField(coefSet,'values', [-5,-2.5,-1,0,1,2.5,5]);  
 
 %modify a field for a single coefficient
-coefSet = setCoefField(coefSet,'(Intercept)', 'type','integer');
-coefSet = setCoefField(coefSet,'(Intercept)', 'C_0j',0);  %regularization penalty for the intercept should be set to 0 manually
-coefSet = setCoefField(coefSet,'(Intercept)', 'ub', 20);  %change ub for intercept to 20
-coefSet = setCoefField(coefSet,'(Intercept)', 'lb', -20); %change lb for intercept to 20
+coefSet = changeCoefSetField(coefSet,'(Intercept)', 'type','integer');
+coefSet = changeCoefSetField(coefSet,'(Intercept)', 'C_0j',0);  %regularization penalty for the intercept should be set to 0 manually
+coefSet = changeCoefSetField(coefSet,'(Intercept)', 'ub', 20);  %change ub for intercept to 20
+coefSet = changeCoefSetField(coefSet,'(Intercept)', 'lb', -20); %change lb for intercept to 20
 
 %checkCoefSet makes sure that the coefSet is proper
 coefSet = checkCoefSet(coefSet);
@@ -171,7 +171,7 @@ input.Y_name                        = Y_name;
 input.w_pos                         = 1.00;
 input.w_neg                         = 1.00;
 input.coefSet                      = newCoefSet(X_names);
-setCoefField(input.coefSet, '(Intercept)', 'C_0j', 0)            
+changeCoefSetField(input.coefSet, '(Intercept)', 'C_0j', 0)            
 
 %Add L0_constraints to limit classifiers to 1 to 3 features 
 input.L0_min = 1; 
@@ -227,7 +227,7 @@ input.Y_name                        = Y_name;
 input.w_pos                         = 1.00;
 input.w_neg                         = 1.00;
 input.coefSet                      = newCoefSet(X_names);
-setCoefField(input.coefSet, '(Intercept)', 'C_0j', 0)            
+changeCoefSetField(input.coefSet, '(Intercept)', 'C_0j', 0)            
 
 %Add a loss constraint to limit the negative error (= 1 - FPR)
 input.neg_err_max = 0.01; 
