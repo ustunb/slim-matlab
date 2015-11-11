@@ -30,19 +30,20 @@ if sum(intercept_matches) == 1
     coefs(intercept_ind) = [];
     
 elseif sum(intercept_matches) > 1
-    warning('found multiple matches for intercept; picking "%s" as intercept variable', intercept_name);
     
     intercept_ind   = find(intercept_matches, 1, 'First');
     intercept_name  = X_names(intercept_ind);
     intercept_value = coefs(intercept_ind);
+    
+    warning('found multiple matches for intercept; picking "%s" as intercept variable', intercept_name);
+    
     X_names(intercept_ind) = [];
     coefs(intercept_ind) = [];
-    
     
 elseif sum(intercept_matches) == 0
     
     intercept_ind   = NaN;
-    intercept_name  = ''
+    intercept_name  = '';
     intercept_value = 0;
     warning('intercept is missing, or cannot be identified from variable names\n make sure that intercept variable name matches intercept')
     
@@ -56,7 +57,6 @@ coefs(to_drop)   = [];
 X_names(to_drop) = [];
 [coefs, sort_ind] = sort(coefs,'descend');
 X_names = X_names(sort_ind);
-
 
 score_function_string = sprintf('score =\t');
 for n = 1:length(coefs)
