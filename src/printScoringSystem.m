@@ -8,10 +8,16 @@ function model_string = printScoringSystem(coefs, X_names, Y_name)
 
 %sanity checks
 assert(length(X_names)==length(coefs),'length of X_names and coefficients should match')
-assert(length(Y_name)==1,'Y_name should be a 1x1 string')
-if iscell(Y_name), Y_name = Y_name{1}; end
-
-
+switch class(Y_name)
+    case 'cell'
+        assert(length(Y_name)==1,'Y_name must be a 1x1 cell containing a string')
+        assert(ischar(Y_name{1}), 'Y_name must be a 1x1 cell containing a string')
+        Y_name = Y_name{1};
+    case 'char'
+        %do nothing
+    otherwise
+        error('Y_name must be a string or a 1x1 cell containing a string')
+end
 
 intercept_matches = cellfun(@(j) ~isempty(regexpi(j, '.*intercept.*')), X_names, 'UniformOutput', true);
 
