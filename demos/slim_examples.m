@@ -16,12 +16,13 @@ dbstop if error;
 %% Load Breastcancer Dataset
 
 repo_dir    = [cd,'/']; %run from the slim_for_matlab directory
+data_dir    = [repo_dir, 'data/'];
 code_dir    = [repo_dir, 'src/'];
-example_dir = [repo_dir, 'examples/'];
+demo_dir    = [repo_dir, 'demos/'];
 addpath(code_dir);
 
 data_name = 'breastcancer';
-data_file = [example_dir, data_name, 'processed_dataset.mat'];
+data_file = [data_dir, data_name, '_processed_dataset.mat'];
 load(data_file)
 
 %% Example 1: Quick Start
