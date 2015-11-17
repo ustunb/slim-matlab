@@ -1,4 +1,4 @@
-``slim_for_matlab`` is a package to create scoring systems using MATLAB and IBM ILOG CPLEX Optimization Studio.
+``slim_for_matlab`` is a package to create scoring systems using MATLAB and the CPLEX Optimization Studio.
 
 ## Introduction
 
