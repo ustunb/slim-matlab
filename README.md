@@ -32,18 +32,18 @@ Please check the [CPLEX user manual](http://www-01.ibm.com/support/knowledgecent
 If you use SLIM for academic research, please cite [our paper](http://http//arxiv.org/abs/1502.04269/)!  
      
 ```
-@article{ustun2015slim
-year={2015},
-issn={0885-6125},
-journal={Machine Learning},
-doi={10.1007/s10994-015-5528-6},
-title={Supersparse linear integer models for optimized medical scoring systems},
-url={http://dx.doi.org/10.1007/s10994-015-5528-6},
-publisher={Springer US},
-keywords={Medical scoring systems; Discrete linear classification; Integer programming; 0–1 Loss; Sparsity; Interpretability; Sleep apnea; Supervised Classification},
-author={Ustun, Berk and Rudin, Cynthia},
-pages={1-43},
-language={English}
+@article{
+    ustun2015slim,
+    year = {2015},
+    issn = {0885-6125},
+    journal = {Machine Learning},
+    doi = {10.1007/s10994-015-5528-6},
+    title = {Supersparse linear integer models for optimized medical scoring systems},
+    url = {http://dx.doi.org/10.1007/s10994-015-5528-6},
+    publisher = { Springer US},
+    author = {Ustun, Berk and Rudin, Cynthia},
+    pages = {1-43},
+    language = {English}
 }
 ```
 
