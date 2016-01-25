@@ -1,3 +1,11 @@
+%This file can be used to install SLIM / check that it is working properly
+%
+%Author:      Berk Ustun | ustunb@mit.edu | www.berkustun.com
+%Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
+%Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
+
+%%
+
 %run from the slim_for_matlab directory
 slim_repo_dir = pwd;
 
