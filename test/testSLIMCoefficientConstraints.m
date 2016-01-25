@@ -42,7 +42,6 @@ testSetLBByName()
 testSetSignByName()
 testSetC0jByName()
 testSetValuesByName()
-
 testGetUBByName()
 testGetLBByName()
 testGetC0jByName()
