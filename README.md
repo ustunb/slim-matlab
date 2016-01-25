@@ -6,7 +6,7 @@
 
 ![SLIM scoring system for the mushrooms dataset](https://github.com/ustunb/slim_for_matlab/blob/master/images/slim_mushroom.png)
 
-SLIM is a method to learn data-driven scoring systems (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can directly satisfy multiple hard constraints **without parameter tuning** (e.g. limits on the true positive rate, the false positive rate, and/or the model size).
+SLIM is a method to create data-driven scoring systems (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can directly satisfy multiple hard constraints **without parameter tuning** (e.g. limits on the true positive rate, the false positive rate, and/or the model size).
 
 SLIM scoring systems are typically just as (if not more) accurate and/or sparse compared to models produced by popular classification methods such as [glmnet](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html). However, they may take more time to create since SLIM works by solving an [integer programming](http://en.wikipedia.org/wiki/Integer_programming) problem. Note that SLIM is not appropriate for large-scale datasets (N > 100'000).
 
@@ -16,12 +16,12 @@ SLIM scoring systems are typically just as (if not more) accurate and/or sparse 
 
 ### CPLEX 
 
-The *IBM ILOG CPLEX Optimization Studio* is a commericial mathematical programming solver that can be called from MATLAB. It is freely available to students, research professionals, and faculty members at accredited research institutions as part of the IBM Academic Initiative. 
+The *IBM ILOG CPLEX Optimization Studio* is a commercial mathematical programming solver that can be called from MATLAB. It is freely available to students, research professionals, and faculty members at accredited research institutions as part of the IBM Academic Initiative. 
 
 To setup the latest version of CPLEX on your computer, you should:
 
 1. Join the [IBM Academic Initiative](http://www-304.ibm.com/ibm/university/academic/pub/page/mem_join). Note that it may take up to a week to obtain approval.
-2. Download *IBM ILOG CPLEX Optimization Studio V12.6.1* from the [software catalog](https://www-304.ibm.com/ibm/university/academic/member/softwaredownload)
+2. Download *IBM ILOG CPLEX Optimization Studio V12.6.1* (or higher) from the [software catalog](https://www-304.ibm.com/ibm/university/academic/member/softwaredownload)
 3. Install the file on your computer. Note mac/unix users will [need to install a .bin file](http://www-01.ibm.com/support/docview.wss?uid=swg21444285).
 4. Add the CPLEX API to your MATLAB search path using ``pathtool``/``addpath`` [as shown here](http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/MATLAB/topics/gs_install.html)
 

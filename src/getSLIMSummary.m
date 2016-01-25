@@ -1,5 +1,5 @@
 function results = getSLIMSummary(IP, info)
-%Summarizes the output of a SLIM IP that has been solved
+%Summarizes the output of a SLIM IP
 %Output is a struct that contains the following information:
 %
 %coefficients        1 x P vector of scoring system coefficients 
@@ -64,17 +64,17 @@ if isfield(Solution,'x') %CPLEX may not have found a feasible solution yet
     
     intercept_included = intercept_coef ~= 0;
     
-    pos_ind = info.Y >0;
+    pos_ind = info.Y > 0;
     neg_ind = ~pos_ind;
     
     results.model_string        = printScoringSystem(coefs, info.X_names, info.Y_name);
     results.coefficients        = coefs(:)';
     results.scores              = info.X*coefs;
-    results.predictions         = sign(info.X*coefs);
-    results.error_rate          = mean((info.Y .* results.predictions)<=0);
+    results.predictions         = (1.*(results.scores>0)) + (-1.*(results.scores<=0));
+    results.error_rate          = mean(info.Y ~= results.predictions);
     results.model_size          = sum(coefs~=0) - intercept_included;
-    results.true_positive_rate  = mean((info.Y(pos_ind).* results.predictions(pos_ind)) >0);
-    results.false_positive_rate = mean((info.Y(neg_ind).* results.predictions(neg_ind)) >0);
+    results.true_positive_rate  = mean(results.predictions(pos_ind)==1);
+    results.false_positive_rate = mean(results.predictions(neg_ind)==1);
     
 end
 

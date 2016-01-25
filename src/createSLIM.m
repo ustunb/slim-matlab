@@ -1,32 +1,31 @@
 function varargout = createSLIM(input)
-%Creates a Cplex IP that can be solved to yield a SLIM scoring system
+%Creates a Cplex IP whose solution will yield a SLIM scoring system
 %Requires a working installation of CPLEX.
 %
-%input is a struct that has to contain the following required fields:
+%input is a struct() w must contain the following fields:
 %
 %Y          Nx1 vector of labels (-1 or 1 only)
 %X          NxP matrix of feature values (should include a column of 1s to acts as an intercept
 %X_names    Px1 cell array of strings containing the names of the feature values
 %           To stay safe, label the intercept as '(Intercept)'
 %
-%input can also contain the following optional fields:
+%input may also contain the following optional fields:
 %
-%Y_name         string/cell array containing the outcome variable name
-%coefSet        coefSet object (set as default coefSet if not specified)
-%C_0            L0-regularization parameter; must be a value between [0,1]
-%w_pos          misclassification cost for positive labels
-%w_neg          misclassification cost for negative labels
-%L0_min         min # of non-zero coefficients in scoring system
-%L0_max         max # of non-zero coefficients in scoring system
-%err_min        min error rate of desired scoring system
-%err_max        max error rate of desired scoring system
-%pos_err_min    min error rate of desired scoring system on -ve examples
-%pos_err_max    max error rate of desired scoring system on +ve examples
-%neg_err_min    min error rate of desired scoring system on -ve examples
-%neg_err_max    max error rate of desired scoring system on +ve examples
+%Y_name             string/cell array containing the outcome variable name
+%coefConstraints    SLIMCoefficientConstraints object with variable_name matching X_names
+%C_0                sparsity penalty; must be a value between [0,1]
+%w_pos              misclassification cost for positive labels
+%w_neg              misclassification cost for negative labels
+%L0_min             min # of non-zero coefficients in scoring system
+%L0_max             max # of non-zero coefficients in scoring system
+%err_min            min error rate of desired scoring system
+%err_max            max error rate of desired scoring system
+%pos_err_min        min error rate of desired scoring system on -ve examples
+%pos_err_max        max error rate of desired scoring system on +ve examples
+%neg_err_min        min error rate of desired scoring system on -ve examples
+%neg_err_max        max error rate of desired scoring system on +ve examples
 %
-%Author:      Berk Ustun 
-%Contact:     ustunb@mit.edu
+%Author:      Berk Ustun | ustunb@mit.edu | www.berkustun.com
 %Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
 %Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
@@ -45,6 +44,7 @@ assert(isfield(input,'X'), 'input must contain X matrix')
 assert(isfield(input,'Y'), 'input must contain Y vector')
 assert(isnumeric(input.X), 'input.X must be numeric')
 assert(isnumeric(input.Y), 'input.Y must be numeric')
+assert(~any(any(isnan(input.X))), 'input.X must not contain any NaN entries')
 assert(all(input.Y==-1|input.Y==1), 'all elements of input.Y must be -1 or 1')
 X = input.X;
 Y = input.Y(:);
@@ -65,39 +65,34 @@ end
 Y_name = input.Y_name;
 
 %check coefficient set
-if ~isfield(input,'X_names') &&  ~isfield(input,'coefSet')
+if isfield(input, 'X_names') && isfield(input, 'coefConstraints')
     
-    print_warning(sprintf('input does not contain X_names; naming features as X1,...,X%d',P))
-    X_names = arrayfun(@(x) sprintf('X%d',x),1:P,'UniformOutput',false);
+    coefCons = input.coefConstraints;
+    X_names  = input.X_names;
+    assert(isequal(X_names(:), coefCons.variable_name), 'X_names does not match input.coefConstraints.variable_names');
     
-    print_warning('input does not contain coefSet; using default coefSet');
-    coefSet = newCoefSet(X_names);
-    
-elseif ~isfield(input,'X_names') &&  isfield(input,'coefSet')
-    
-    print_warning('input does not contain X_names; extracting variable names from coefSet \n')
-    coefSet     = checkCoefSet(input.coefSet);
-    X_names   = {coefSet(:).name}';
-    
-elseif isfield(input,'X_names') && ~isfield(input, 'coefSet')
-    
-    print_warning('input does not contain coefSet; creating default coefSet');
+elseif isfield(input,'X_names') && ~isfield(input, 'coefConstraints')
     
     if ~(iscell(input.X_names) && length(input.X_names)==P)
         error('X_names must be cell array with P entries\n')
     else
         X_names   = input.X_names;
     end
-    coefSet = newCoefSet(X_names);
     
-elseif isfield(input,'X_names') && isfield(input, 'coefSet')
+    print_warning('input does not contain coefConstraints; using default coefficient constraints');
+    coefCons = SLIMCoefficientConstraints(X_names);
     
-    if ~(iscell(input.X_names) && length(input.X_names)==P)
-        error('X_names must be cell array with P entries\n')
-    else
-        X_names   = input.X_names;
-    end
-    coefSet     = checkCoefSet(input.coefSet);
+elseif ~isfield(input,'X_names') &&  isfield(input,'coefConstraints')
+    
+    print_warning('input does not contain X_names field; extracting variable names from coefConstraints')
+    coefCons  = input.coefConstraints;
+    X_names   = input.coefConstraints.variable_names;
+    
+elseif ~isfield(input,'X_names') &&  ~isfield(input,'coefConstraints')
+    
+    coefCons    = SLIMCoefficientConstraints(P);
+    X_names     = coefCons.variable_names;
+    print_warning('input does not contain coefConstraints field; using default coefficient constraints');
     
 end
 
@@ -120,35 +115,31 @@ input = setdefault(input, 'neg_err_max', 1);
 
 %% Initialize Variables used in Creating IP Constraints
 
-lambda_lb   = [coefSet(:).lb];
-lambda_ub   = [coefSet(:).ub];
-lambda_lb = lambda_lb(:);
-lambda_ub = lambda_ub(:);
+lambda_lb   = coefCons.lb;
+lambda_ub   = coefCons.ub;
 lambda_max  = max(abs(lambda_lb), abs(lambda_ub));
 
-signs       = [coefSet(:).sign]';
-signs       = signs(:);
+signs       = coefCons.sign;
 sign_pos    = signs==1;
 sign_neg    = signs==-1;
 sign_fixed  = sign_pos | sign_neg;
 
 %extract values for variables with a customized coefficient set;
-custom_values       = cellfun(@(Lj) Lj(~isnan(Lj)), {coefSet(:).values}', 'UniformOutput',false);
+custom_values       = cellfun(@(Lj) Lj(~isnan(Lj)), coefCons.values, 'UniformOutput',false);
 custom_values       = cellfun(@(Lj) setdiff(Lj,0), custom_values, 'UniformOutput',false);
 
 %determine variable types
-types           = getCoefSetField(coefSet,'type');
-custom_ind      = strcmp(types,'custom');
-int_type_ind    = strcmp(types,'integer');
+types           = coefCons.type;
+custom_ind      = strcmp(coefCons.type,'custom');
+int_type_ind    = strcmp(coefCons.type,'integer');
 cts_type_ind    = zeros(1,P);
 for j = 1:P
     if strcmp(types{j},'custom')
-        if ~isnan(coefSet(j).values)
-            if all(coefSet(j).values==floor(coefSet(j).values))
-                int_type_ind(j) = 1;
-            else
-                cts_type_ind(j) = 1;
-            end
+        values = coefCons.values{j};
+        if all(values==floor(values))
+            int_type_ind(j) = 1;
+        else
+            cts_type_ind(j) = 1;
         end
     end
 end
@@ -162,7 +153,7 @@ w_pos = input.w_pos;
 w_neg = input.w_neg;
 
 %renormalize weights
-if (w_pos+w_neg) ~=2
+if (w_pos + w_neg) ~= 2
     tot = (w_pos + w_neg);
     print_warning(sprintf('w_pos + w_neg = %1.2f\nrenormalizing so that w_pos +w_neg = 2.00', tot))
     w_pos = 2*w_pos/tot;
@@ -171,7 +162,7 @@ end
 
 %Regularization Parameters
 C_0     = input.C_0 .* ones(P,1);
-UC_0    = [coefSet(:).C_0j]';
+UC_0    = coefCons.C_0j;
 UC_ind  = ~isnan(UC_0);
 
 if any(UC_ind)
@@ -248,10 +239,10 @@ neg_err_min         = max(ceil(N_neg*neg_err_min),0);
 neg_err_max         = min(floor(N_neg*neg_err_max),N_neg);
 
 %flags for whether or not we will add contraints
-add_L0_norm_constraint      = (L0_min > 0) || (L0_max < P);
-add_err_constraint          = (err_min > 0) || (err_max < N);
-add_pos_err_constraint      = (pos_err_min > 0) || (pos_err_max < N_pos);
-add_neg_err_constraint      = (neg_err_min > 0) || (neg_err_max < N_neg);
+add_L0_norm_constraint        = (L0_min > 0) || (L0_max < P);
+add_total_error_constraint    = (err_min > 0) || (err_max < N);
+add_pos_error_constraint      = (pos_err_min > 0) || (pos_err_max < N_pos);
+add_neg_error_constraint      = (neg_err_min > 0) || (neg_err_max < N_neg);
 
 %% Setup Standard Constraint Matrices
 
@@ -358,7 +349,7 @@ if add_L0_norm_constraint
 end
 
 
-if add_err_constraint
+if add_total_error_constraint
     
     A_add   = [sparse(1,P), sparse(1,P), sparse(1,P), sparse(ones(1,N))];
     lhs_add = sparse(err_min);
@@ -370,7 +361,7 @@ if add_err_constraint
     
 end
 
-if add_neg_err_constraint
+if add_neg_error_constraint
     
     A_add   = [sparse(1,P), sparse(1,P), sparse(1,P), sparse(neg_indices(:)')];
     lhs_add = sparse(neg_err_min);
@@ -383,7 +374,7 @@ if add_neg_err_constraint
 end
 
 
-if add_pos_err_constraint
+if add_pos_error_constraint
     
     A_add   = [sparse(1,P), sparse(1,P), sparse(1,P), sparse(pos_indices(:)')];
     lhs_add = sparse(pos_err_min);
@@ -420,7 +411,7 @@ else
     %initialize sparse reps
     sparse_n_custom_x_1_ones  = sparse(ones(n_custom,1));
     
-    %intialize matrices for coefSet constraints
+    %intialize matrices for coefConstraints constraints
     A_vals   = sparse(n_custom,n_cols+n_newcols);
     lhs_vals = sparse(n_custom,1);
     rhs_vals = sparse(n_custom,1);
@@ -435,19 +426,19 @@ else
     
     custom_index        = find(custom_ind);
     
-    %stamp coefSet constraints
+    %stamp coefConstraints constraints
     counter = n_cols;
     drop_norm_index = [];
     
     for k = 1:n_custom
         
         j                   = custom_index(k);
-        coefSetj            = custom_values{j};
-        Kj                  = length(coefSetj);
+        coefConstraintsj    = custom_values{j};
+        Kj                  = length(coefConstraintsj);
         
         A_vals(k,j)         = -1;
-        stamp_ind           = counter+1:(counter+Kj);
-        A_vals(k,stamp_ind) = coefSetj;
+        stamp_ind           = (counter+1):(counter+Kj);
+        A_vals(k,stamp_ind) = coefConstraintsj;
         
         %set sum(l_j,k) <= 1
         A_lims(k,stamp_ind) = 1;
@@ -521,7 +512,6 @@ end
 if nargout == 2
     
     info = struct();
-    
     info.X       = X;
     info.Y       = Y;
     info.Y_name  = Y_name;
@@ -550,9 +540,9 @@ if nargout == 2
     info.epsilon                       = epsilon;
     
     info.add_L0_norm_constraint        = add_L0_norm_constraint;
-    info.add_err_constraint            = add_err_constraint;
-    info.add_pos_err_constraint        = add_pos_err_constraint;
-    info.add_neg_err_constraint        = add_neg_err_constraint;
+    info.add_err_constraint            = add_total_error_constraint;
+    info.add_pos_err_constraint        = add_pos_error_constraint;
+    info.add_neg_err_constraint        = add_neg_error_constraint;
     info.L0_min                        = L0_min;
     info.L0_max                        = L0_max;
     info.err_min                       = err_min;
