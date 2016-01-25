@@ -336,7 +336,12 @@ classdef SLIMCoefficientConstraints
             
         end
         
-        %% Display and CheckRep
+        %% Display, Warnings and CheckRep
+        
+        function print_warning(obj, msg)
+            warning('SLIM:ConstraintWarning', msg);
+        end
+        
         
         function disp(obj)
             headers = {'variable_name','type','lb','ub','sign','values','C_0j'};

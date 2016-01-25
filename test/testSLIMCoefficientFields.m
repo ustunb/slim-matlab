@@ -6,9 +6,11 @@ function testSLIMCoefficientFields()
 %Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
 %Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
-%% Setup Directories
+%% Setup Testing Environment
 clc;
-dbstop if error;
+
+warning off SLIM:ConstraintWarning
+warning off SLIM:IPWarning
 
 %% Run Tests;
 

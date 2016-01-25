@@ -31,14 +31,6 @@ function varargout = createSLIM(input)
 
 %% Check Inputs
 
-%warning flag
-input = setdefault(input, 'display_warnings', true);
-if input.display_warnings
-    print_warning = @(warning_msg) disp([]);
-else
-    print_warning = @(warning_msg) fprintf('%s\n', warning_msg);
-end
-
 %check data
 assert(isfield(input,'X'), 'input must contain X matrix')
 assert(isfield(input,'Y'), 'input must contain Y vector')
@@ -566,5 +558,10 @@ end
         end
         
     end
+
+    function print_warning(msg)
+        warning('SLIM:IPWarning', msg)
+    end
+
 
 end

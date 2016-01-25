@@ -6,7 +6,7 @@
 %Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
 %Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
-%% Load Breastcancer Dataset
+%% Load Breastcancer Dataset and Setup Warnings
 
 demo_dir = [pwd,'/'];
 cd('..');
@@ -18,16 +18,19 @@ data_dir = [repo_dir,'data/'];
 addpath(code_dir);
 load([data_dir, 'breastcancer_processed_dataset.mat']);
 
+warning on SLIM:Coefficients    %'on' shows warnings about SLIM Coefficient Set
+warning on SLIM:CreateSLIM      %'on' shows warnings about SLIM IP Creation
+
 %% Setup SLIM input
 
-input.display_warnings              = true; 
+
 input.X                             = X;       %X should include a column of 1s to act as an intercept
 input.Y                             = Y;
 input.X_names                       = X_names; %the intercept should have the name '(Intercept)'
 input.Y_name                        = Y_name;
 
 %set misclassification costs
-%by default, if w_pos and w_neg are not provided, w_pos = w_neg = 1.00 
+%by default, if w_pos and w_neg are not provided, w_pos = w_neg = 1.00
 %if w_pos and w_neg are provided, then SLIM will normalize values so that w_pos + w_neg = 2.00
 input.w_pos                         = 1.00;
 input.w_neg                         = 1.00;
@@ -57,7 +60,7 @@ input.coefConstraints = coefCons;
 
 %% Use CPLEX to train SLIM IP
 
-%set default CPLEX solver parameters
+%set CPLEX solver parameters
 slim_IP.Param.timelimit.Cur                  = 30;  %timelimit in seconds
 slim_IP.Param.threads.Cur                    = 1;   %# of threads; >1 starts a parallel solver
 slim_IP.Param.output.clonelog.Cur            = 0;   %disable CPLEX's clone log
@@ -67,6 +70,8 @@ slim_IP.Param.mip.tolerances.absmipgap.Cur   = eps; %use maximal precision for I
 slim_IP.Param.mip.tolerances.integrality.Cur = eps; %use maximal precision for IP solver (only recommended for testing)
 slim_IP.Param.emphasis.mip.Cur               = 1;   %mip solver strategy
 slim_IP.Param.randomseed.Cur                 = 0;
+
+%slim_IP.DisplayFunc = [] %uncomment to prevent on screen CPLEX display
 
 %solve the SLIM IP
 slim_IP.solve

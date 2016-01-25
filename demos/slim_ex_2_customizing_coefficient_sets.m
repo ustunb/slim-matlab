@@ -6,7 +6,7 @@
 %Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
 %Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
-%% Load Breastcancer Dataset
+%% Load Breastcancer Dataset and Setup Warnings
 
 demo_dir = [pwd,'/'];
 cd('..');
@@ -17,6 +17,9 @@ code_dir = [repo_dir,'src/'];
 data_dir = [repo_dir,'data/'];
 addpath(code_dir);
 load([data_dir, 'breastcancer_processed_dataset.mat']);
+
+warning on SLIM:Coefficients    %'on' shows warnings about SLIM Coefficient Set
+warning on SLIM:CreateSLIM      %'on' shows warnings about SLIM IP Creation
 
 %% Create a CoefficientConstraints object
 
@@ -34,7 +37,7 @@ load([data_dir, 'breastcancer_processed_dataset.mat']);
 %                               'integer': coefficient for feature j is an integer between [coefConstraints.lb(j), coefConstraints.ub(j)]
 %                               'custom': coefficient for feature j is a value specified by coefConstraints.values(j)
 %
-% coefConstraints.values(j)     array containing all feasible values of the coefficient for feature j the set of values for coefficient j; 
+% coefConstraints.values(j)     array containing all feasible values of the coefficient for feature j the set of values for coefficient j;
 %                               values should include 0; if not coefficient j cannot be dropped
 %
 % coefConstraints.sign(j)       constraint on the sign of the coefficient
@@ -48,7 +51,7 @@ load([data_dir, 'breastcancer_processed_dataset.mat']);
 %coefficient constraints can be created using by specifying the number of coefficients
 coefCons = SLIMCoefficientConstraints(length(X_names));
 
-%or by using a cell array with variable names 
+%or by using a cell array with variable names
 coefCons = SLIMCoefficientConstraints(X_names);
 
 %users can see all information regarding coefficient constraints on the console
@@ -77,8 +80,8 @@ coefCons.ub = 5;     %set upperbound for all coefficients to 5
 coefCons.lb = -5;    %set lowerbound for all coefficients to -5
 
 %or by using the setfield function
-coefCons = coefCons.setfield('ub', 5); 
-coefCons = coefCons.setfield('lb', -5); 
+coefCons = coefCons.setfield('ub', 5);
+coefCons = coefCons.setfield('lb', -5);
 
 %setfield and getfield work for individual features
 coefCons = coefCons.setfield('(Intercept)', 'ub', 10);
@@ -96,10 +99,10 @@ assert(isequal(coefCons.getfield({'NormalNucleoli', 'Mitoses'}, 'ub'), 6*ones(2,
 %note that changing sign will also change the ub/lb of a variable
 
 %set sign for 'BareNuclei' to positive and 'SingleEpithelialCellSize' to negative
-coefCons = coefCons.setfield('BareNuclei', 'sign', 1); 
-assert(coefCons.getfield('BareNuclei', 'lb')==0) 
+coefCons = coefCons.setfield('BareNuclei', 'sign', 1);
+assert(coefCons.getfield('BareNuclei', 'lb')==0)
 
-coefCons = coefCons.setfield('SingleEpithelialCellSize', 'sign', -1); 
+coefCons = coefCons.setfield('SingleEpithelialCellSize', 'sign', -1);
 assert(coefCons.getfield('SingleEpithelialCellSize', 'ub')==0)
 
 
@@ -116,18 +119,18 @@ assert(coefCons.getfield('NormalNucleoli', 'lb')==-7);
 %setting sign/ub/lb for 'custom' coefficients directly changes the set of values
 
 %for instance, we can set ub = 6 for 'NormalNucleoi' to drop any values > 6
-coefCons = coefCons.setfield('NormalNucleoli', 'ub', 6); 
+coefCons = coefCons.setfield('NormalNucleoli', 'ub', 6);
 
 %note that the new ub for 'NormalNuclei' is 5 since max(coefSet.getfield('NormalNucleoli', 'values')) == 5
 assert(coefCons.getfield('NormalNucleoli', 'ub')==5);
 
 %similarly, we can set the sign = 1 to drop any values < 0
-coefCons = coefCons.setfield('NormalNucleoli', 'sign', 1); 
+coefCons = coefCons.setfield('NormalNucleoli', 'sign', 1);
 assert(coefCons.getfield('NormalNucleoli', 'lb')==0);
 
 %by default, SLIM is easier to solve without customized coefficient sets
 %so if a 'custom' coefficient is a set of consecutive integers then SLIM will
-%automatically reset the the type to integer. 
+%automatically reset the the type to integer.
 coefCons = coefCons.setfield('ClumpThickness', 'values', -6:6);
 assert(strcmp(coefCons.getfield('ClumpThickness', 'type'),'integer'));
 assert(isempty(coefCons.getfield('ClumpThickness', 'values')));
@@ -145,8 +148,8 @@ coefCons = coefCons.setfield('(Intercept)', 'C_0j', 0.00);
 
 %% Train SLIM with Customized Coefficient Set
 
+%Setup SLIM input struct
 input.coefConstraints               = coefCons;
-input.display_warnings              = true; 
 input.X                             = X;       %X should include a column of 1s to act as an intercept
 input.Y                             = Y;
 input.X_names                       = X_names; %the intercept should have the name '(Intercept)'
@@ -157,15 +160,19 @@ input.C_0                           = 0.01;
 
 [slim_IP, slim_info] = createSLIM(input);
 
-%set default CPLEX solver parameters
+%set CPLEX solver parameters
 slim_IP.Param.emphasis.mip.Cur               = 1;   %mip solver strategy
 slim_IP.Param.timelimit.Cur                  = 60;  %timelimit in seconds
 slim_IP.Param.randomseed.Cur                 = 0;
 slim_IP.Param.threads.Cur                    = 1;   %# of threads; >1 starts a parallel solver
 slim_IP.Param.output.clonelog.Cur            = 0;   %disable CPLEX's clone log
 
-%solve SLIM and get summary
+%slim_IP.DisplayFunc = [] %uncomment to prevent on screen CPLEX display
+
+%solve SLIM
 slim_IP.solve
+
+%get summary
 summary = getSLIMSummary(slim_IP, slim_info);
 
 

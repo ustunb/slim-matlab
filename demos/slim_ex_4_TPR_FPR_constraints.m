@@ -6,7 +6,7 @@
 %Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
 %Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
-%% Load Breastcancer Dataset
+%% Load Breastcancer Dataset and Setup Warnings
 
 demo_dir = [pwd,'/'];
 cd('..');
@@ -18,12 +18,15 @@ data_dir = [repo_dir,'data/'];
 addpath(code_dir);
 load([data_dir, 'breastcancer_processed_dataset.mat']);
 
+warning on SLIM:Coefficients    %'on' shows warnings about SLIM Coefficient Set
+warning on SLIM:CreateSLIM      %'on' shows warnings about SLIM IP Creation
+
 %%  Train SLIM Scoring System with Min TPR of 99%
 
 %Setup usual input struct
 input                               = struct();
-input.display_warnings              = true; 
-input.X                             = X;      
+input.display_warnings              = true;
+input.X                             = X;
 input.X_names                       = X_names;
 input.Y                             = Y;
 input.Y_name                        = Y_name;
@@ -34,7 +37,7 @@ input.coefCons = coefCons;
 
 %Add constraint to limit the maximum error on positive examples to 1%
 %Since positive error = 1 - TPR, so this will limit TPR to at least 99%
-input.pos_err_max = 0.01; 
+input.pos_err_max = 0.01;
 
 %Set w_neg large enough to guarantee that SLIM hits the TPR constraint
 N     = size(X,1);
@@ -58,24 +61,27 @@ slim_IP.Param.timelimit.Cur                  = 60;  %timelimit in seconds
 slim_IP.Param.randomseed.Cur                 = 0;
 slim_IP.Param.threads.Cur                    = 1;   %# of threads; >1 starts a parallel solver
 slim_IP.Param.output.clonelog.Cur            = 0;   %disable CPLEX's clone log
-slim_IP.Param.mip.tolerances.lowercutoff.Cur = 0;
-slim_IP.Param.mip.tolerances.mipgap.Cur      = eps; %use maximal precision for IP solver (only recommended for testing)
-slim_IP.Param.mip.tolerances.absmipgap.Cur   = eps; %use maximal precision for IP solver (only recommended for testing)
-slim_IP.Param.mip.tolerances.integrality.Cur = eps; %use maximal precision for IP solver (only recommended for testing)
+%slim_IP.Param.mip.tolerances.lowercutoff.Cur = 0;
+%slim_IP.Param.mip.tolerances.mipgap.Cur      = eps; %use maximal precision for IP solver (only recommended for testing)
+%slim_IP.Param.mip.tolerances.absmipgap.Cur   = eps; %use maximal precision for IP solver (only recommended for testing)
+%slim_IP.Param.mip.tolerances.integrality.Cur = eps; %use maximal precision for IP solver (only recommended for testing)
+
+%slim_IP.DisplayFunc = [] %uncomment to prevent on screen CPLEX display
 
 %solve the SLIM IP
-slim_IP.solve;
+slim_IP.solve
 
-%check that classifier TPR obeys TPR constraint
 summary = getSLIMSummary(slim_IP, slim_info)
+
+%check that scoring system obeys TPR constraint
 assert(summary.true_positive_rate>=1-input.pos_err_max)
 
 %%  Train SLIM Scoring System with Max FPR of 25%
 
 %Setup usual input struct
 input                               = struct();
-input.display_warnings              = true; 
-input.X                             = X;      
+input.display_warnings              = true;
+input.X                             = X;
 input.X_names                       = X_names;
 input.Y                             = Y;
 input.Y_name                        = Y_name;
@@ -115,18 +121,17 @@ slim_IP.Param.randomseed.Cur                 = 0;
 slim_IP.Param.threads.Cur                    = 1;   %# of threads; >1 starts a parallel solver
 slim_IP.Param.output.clonelog.Cur            = 0;   %disable CPLEX's clone log
 slim_IP.Param.mip.tolerances.lowercutoff.Cur = 0;
-slim_IP.Param.mip.tolerances.mipgap.Cur      = eps; %use maximal precision for IP solver (only recommended for testing)
-slim_IP.Param.mip.tolerances.absmipgap.Cur   = eps; %use maximal precision for IP solver (only recommended for testing)
-slim_IP.Param.mip.tolerances.integrality.Cur = eps; %use maximal precision for IP solver (only recommended for testing)
+%slim_IP.Param.mip.tolerances.mipgap.Cur      = eps; %use maximal precision for IP solver (only recommended for testing)
+%slim_IP.Param.mip.tolerances.absmipgap.Cur   = eps; %use maximal precision for IP solver (only recommended for testing)
+%slim_IP.Param.mip.tolerances.integrality.Cur = eps; %use maximal precision for IP solver (only recommended for testing)
+
+%slim_IP.DisplayFunc = [] %uncomment to prevent on screen CPLEX display
 
 %solve the SLIM IP
 slim_IP.solve
 
-%check that classifier FPR obeys FPR constraint
+%get summary statistics
 summary = getSLIMSummary(slim_IP, slim_info)
+
+%check that scoring system obeys FPR constraint
 assert(summary.false_positive_rate<=input.neg_err_max)
-
-
-
-
-

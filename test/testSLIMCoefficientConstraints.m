@@ -6,9 +6,9 @@ function testSLIMCoefficientConstraints()
 %Reference:   SLIM for Optimized Medical Scoring Systems, http://arxiv.org/abs/1502.04269
 %Repository:  <a href="matlab: web('https://github.com/ustunb/slim_for_matlab')">slim_for_matlab</a>
 
-%% Setup Directories
+%% Setup Testing Environment
 clc;
-dbstop if error;
+%dbstop if error %uncomment to stop at error
 
 test_dir = [pwd,'/'];
 cd('..');
@@ -19,6 +19,10 @@ code_dir = [repo_dir,'src/'];
 data_dir = [repo_dir,'data/'];
 addpath(code_dir);
 data = load([data_dir, 'breastcancer_processed_dataset.mat']);
+
+warning off backtrace
+warning off SLIM:ConstraintWarning
+warning off SLIM:IPWarning
 
 %% Run Tests
 
@@ -36,18 +40,26 @@ testSetC0jScalar()
 testSetC0jVector()
 testSetValuesScalar()
 testSetValuesVector()
+
 testSetNameByName()
 testSetUBByName()
 testSetLBByName()
 testSetSignByName()
 testSetC0jByName()
 testSetValuesByName()
+
 testGetUBByName()
 testGetLBByName()
 testGetC0jByName()
 testGetSignByName()
 testGetTypeByName()
+testGetValuesByName()
 
+testGetUBByName()
+testGetLBByName()
+testGetC0jByName()
+testGetSignByName()
+testGetTypeByName()
 testGetValuesByName()
 
 
@@ -381,9 +393,7 @@ testGetValuesByName()
     end
 
 
-
-
-   function testGetUBByName()
+    function testGetUBByName()
         
         c = SLIMCoefficientConstraints(length(data.X_names));
         
@@ -453,11 +463,11 @@ testGetValuesByName()
         test_lb = c.getfield(test_variable_names, 'lb');
         assert(test_lb(strcmp('X_1',test_variable_names))==0);
         assert(test_lb(strcmp('X_6',test_variable_names))==-10);
-       
+        
         test_ub = c.getfield(test_variable_names, 'ub');
         assert(test_ub(strcmp('X_1',test_variable_names))==10);
         assert(test_ub(strcmp('X_6',test_variable_names))==10);
-       
+        
         test_sign = c.getfield(test_variable_names, 'sign');
         assert(test_sign(strcmp('X_1',test_variable_names))==1);
         assert(test_sign(strcmp('X_6',test_variable_names))==0);

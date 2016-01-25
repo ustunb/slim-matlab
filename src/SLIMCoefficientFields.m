@@ -159,7 +159,7 @@ classdef SLIMCoefficientFields
                 assert(current_ub > 0, 'if setting sign to +1 then make sure that ub > 0, otherwise coefficient will always be 0')
                 if (current_lb < 0)
                     warning_msg = sprintf('setting lb to 0 for %s since sign = +1', obj.variable_name);
-                    warning(warning_msg);
+                    obj.print_warning(warning_msg);
                     obj.lb = 0;
                 end
                 
@@ -168,7 +168,7 @@ classdef SLIMCoefficientFields
                 assert(current_lb < 0, 'if setting sign to +1 then make sure that ub > 0, otherwise coefficient will always be 0')
                 if (current_lb < 0)
                     warning_msg = sprintf('setting ub to 0 for %s since sign = -1', obj.variable_name);
-                    warning(warning_msg);
+                    obj.print_warning(warning_msg);
                     obj.ub = 0;
                 end
                 
@@ -195,7 +195,7 @@ classdef SLIMCoefficientFields
             
             %remove duplicate entries
             if ~isequal(new_values, unique(new_values,'stable'))
-                warning('values vector contains duplicate elements; will only use unique elements of values')
+                obj.print_warning('values vector contains duplicate elements; will only use unique elements of values')
                 new_values = unique(new_values);
             end
             
@@ -205,8 +205,8 @@ classdef SLIMCoefficientFields
             
             if all(new_values~=0)
                 warning_msg = sprintf('custom values for %s do not include 0\n%s', ...
-                    obj.variable_name, 'consider C_0j to 0 to prevent L0-regularization for this variable');
-                warning(warning_msg);
+                    obj.variable_name, 'you should set C_0j to 0 to prevent L0-regularization for this variable');
+                obj.print_warning(warning_msg);
             end
             
             new_lb = min(new_values);
@@ -216,8 +216,7 @@ classdef SLIMCoefficientFields
             if is_integer_set
                 warning_msg = sprintf('custom values for %s are consecutive integers from %d to %d\nwill store to integers to improve performance',...
                     obj.variable_name, new_lb, new_lb, obj.variable_name);
-                warning(warning_msg);
-                
+                obj.print_warning(warning_msg);
                 obj.values = [];
                 obj.ub = new_ub;
                 obj.lb = new_lb;
@@ -228,6 +227,12 @@ classdef SLIMCoefficientFields
             
             obj.checkRep();
             
+        end
+        
+        %% Warnings and CheckRep
+        
+        function print_warning(obj, msg)
+            warning('SLIM:ConstraintWarning', msg);
         end
         
         function checkRep(obj)
@@ -258,7 +263,7 @@ classdef SLIMCoefficientFields
             if (obj.ub>0 && obj.lb>0) || (obj.ub<0 && obj.lb<0)
                 warning_msg = sprintf('valid coefficient values for variable %s do not include = 0\n%s',...
                     obj.variable_name,'consider C_0j to 0 to prevent L0-regularization for this variable');
-                warning(warning_msg);
+                obj.print_warning(warning_msg);
             end
             
             if strcmp('custom', obj.type);
