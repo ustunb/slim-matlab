@@ -6,17 +6,17 @@
 
 ![SLIM scoring system for the mushrooms dataset](https://github.com/ustunb/slim_for_matlab/blob/master/images/slim_mushroom.png)
 
-SLIM is a method to create data-driven scoring systems (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can directly satisfy multiple hard constraints **without parameter tuning** (e.g. limits on the true positive rate, the false positive rate, and/or the model size).
+SLIM is a method to learn simple scoring systems (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can directly satisfy difficult **without parameter tuning** (e.g. hard limits on the true positive rate, the false positive rate, and/or the model size).
 
-SLIM scoring systems are typically just as (if not more) accurate and/or sparse compared to models produced by popular classification methods such as [glmnet](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html). However, they may take more time to create since SLIM works by solving an [integer programming](http://en.wikipedia.org/wiki/Integer_programming) problem. Note that SLIM is not appropriate for large-scale datasets (N > 100'000).
+SLIM scoring systems are typically just as (if not more) accurate and/or sparse compared to models produced by popular methods such as [glmnet](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html). However, they may take more time to create since SLIM works by solving an [integer programming](http://en.wikipedia.org/wiki/Integer_programming) problem. Note that SLIM is not appropriate for large-scale datasets (N > 100'000).
 
 ## Installation
 
-``slim_for_matlab`` was developed for MATLAB 2014b and the IBM ILOG CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
+``slim_for_matlab`` was developed for MATLAB 2014b and CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
 
 ### CPLEX 
 
-The *IBM ILOG CPLEX Optimization Studio* is a commercial mathematical programming solver that can be called from MATLAB. It is freely available to students, research professionals, and faculty members at accredited research institutions as part of the IBM Academic Initiative. 
+*CPLEX* is cross-platform commercial optimization tool that can be called from MATLAB. It is freely available to students, research professionals, and faculty members at accredited research institutions as part of the IBM Academic Initiative. 
 
 To setup the latest version of CPLEX on your computer, you should:
 

@@ -88,6 +88,13 @@ elseif ~isfield(input,'X_names') &&  ~isfield(input,'coefConstraints')
     
 end
 
+%only_binary_features = all(all(input.X==0|input.X==1)
+%no_custom_coefficients = all(strcmp(coefCons.type,'integer'))
+%if only_binary_features && no_custom_coefficients
+%
+% createSLIMforBinaryData
+%end
+
 %% Default Settings
 
 input = setdefault(input, 'C_0', 1e-3);
@@ -162,6 +169,7 @@ if any(UC_ind)
     C_0(UC_ind)  = UC_0(UC_ind);
     C_0 = C_0(:);
 end
+assert(all(C_0>=0), 'user specified negative value for C_0')
 
 %identify variables that will have L0-regularization
 L0_reg_ind  = C_0 > 0;
