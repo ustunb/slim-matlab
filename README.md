@@ -8,7 +8,7 @@
 
 SLIM is a method to learn simple scoring systems (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can directly satisfy difficult **without parameter tuning** (e.g. hard limits on the true positive rate, the false positive rate, and/or the model size).
 
-SLIM scoring systems are typically just as (if not more) accurate and/or sparse compared to models produced by popular methods such as [glmnet](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html). However, they may take more time to create since SLIM works by solving an [integer programming](http://en.wikipedia.org/wiki/Integer_programming) problem. Note that SLIM is not appropriate for large-scale datasets (N > 100'000).
+SLIM scoring systems are typically just as (if not more) accurate and/or sparse compared to models produced by popular methods such as [glmnet](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html). However, they may take more time to create since SLIM works by solving an [integer programming](http://en.wikipedia.org/wiki/Integer_programming) problem.
 
 ## Installation
 
@@ -16,7 +16,7 @@ SLIM scoring systems are typically just as (if not more) accurate and/or sparse 
 
 ### CPLEX 
 
-*CPLEX* is cross-platform commercial optimization tool that can be called from MATLAB. It is freely available to students, research professionals, and faculty members at accredited institutions as part of the IBM Academic Initiative. To setup the latest version of CPLEX, you should:
+*CPLEX* is cross-platform commercial optimization tool that can be called from MATLAB. It is freely available to students and faculty members at accredited institutions as part of the IBM Academic Initiative. To setup the latest version of CPLEX, you should:
 
 1. Join the [IBM Academic Initiative](http://www-304.ibm.com/ibm/university/academic/pub/page/mem_join). Note that it may take up to a week to obtain approval.
 2. Download *IBM ILOG CPLEX Optimization Studio V12.6.1* (or higher) from the [software catalog](https://www-304.ibm.com/ibm/university/academic/member/softwaredownload)
