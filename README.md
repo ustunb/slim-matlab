@@ -16,9 +16,7 @@ SLIM scoring systems are typically just as (if not more) accurate and/or sparse 
 
 ### CPLEX 
 
-*CPLEX* is cross-platform commercial optimization tool that can be called from MATLAB. It is freely available to students, research professionals, and faculty members at accredited research institutions as part of the IBM Academic Initiative. 
-
-To setup the latest version of CPLEX on your computer, you should:
+*CPLEX* is cross-platform commercial optimization tool that can be called from MATLAB. It is freely available to students, research professionals, and faculty members at accredited institutions as part of the IBM Academic Initiative. To setup the latest version of CPLEX, you should:
 
 1. Join the [IBM Academic Initiative](http://www-304.ibm.com/ibm/university/academic/pub/page/mem_join). Note that it may take up to a week to obtain approval.
 2. Download *IBM ILOG CPLEX Optimization Studio V12.6.1* (or higher) from the [software catalog](https://www-304.ibm.com/ibm/university/academic/member/softwaredownload)
