@@ -88,12 +88,24 @@ elseif ~isfield(input,'X_names') &&  ~isfield(input,'coefConstraints')
     
 end
 
-%only_binary_features = all(all(input.X==0|input.X==1)
-%no_custom_coefficients = all(strcmp(coefCons.type,'integer'))
-%if only_binary_features && no_custom_coefficients
-%
-% createSLIMforBinaryData
-%end
+%% Call SLIM for Binary Data
+
+only_binary_features = all(all(input.X==0|input.X==1));
+no_custom_coefficients = all(strcmp(coefCons.type,'integer'));
+if only_binary_features && no_custom_coefficients
+    print_warning('all features are binary and coefficients are integer\nwill return SLIM IP formulation for binary data')
+    
+    if nargout == 1
+        varargout{1} = createSLIM_BinaryData(input);
+        return
+    elseif nargout == 2
+        [varargout{1}, varargout{2}] = createSLIM_BinaryData(input);
+        return
+    else
+        error('too many return values')
+    end
+    
+end
 
 %% Default Settings
 
@@ -159,7 +171,20 @@ if (w_pos + w_neg) ~= 2
     w_neg = 2*w_neg/tot;
 end
 
-%Regularization Parameters
+%% Model Size, Score and Regularization Parameters
+
+%bounded L0 norm
+L0_min          = input.L0_min;
+L0_max          = input.L0_max;
+if isnan(L0_min) || isinf(L0_min), L0_min = 0; end
+if isnan(L0_max) || isinf(L0_max), L0_max = P; end
+if L0_min > L0_max
+    error('user specified L0_min (=%d) which is greater than L0_max (=%d)\n',L0_min,L0_max)
+end
+L0_min          = max(ceil(L0_min),0);
+L0_max          = min(floor(L0_max),P);
+
+%L0-regularization parameter
 C_0     = input.C_0 .* ones(P,1);
 UC_0    = coefCons.C_0j;
 UC_ind  = ~isnan(UC_0);
@@ -173,12 +198,18 @@ assert(all(C_0>=0), 'user specified negative value for C_0')
 
 %identify variables that will have L0-regularization
 L0_reg_ind  = C_0 > 0;
-L1_reg_ind  = L0_reg_ind;
+L0_max = min(L0_max, sum(L0_reg_ind)); %adjust L0_max again
 
+%set L1 penalty to be as large as possible without adding regularization
+%this requires max(L1-penalty) < min(unit cost of error, unit cost of L0_penalty)
+L1_reg_ind = L0_reg_ind;
+L1_max = sort(lambda_max(L1_reg_ind),'descend');
+L1_max = sum(L1_max(1:L0_max));
 if ~isnan(input.C_1)
+    assert(input.C_1 > 0, 'if user supplies C_1 then it must be positive');
     C_1 = input.C_1;
 else
-    C_1 = 0.5.*min([w_pos/N,w_neg/N, min(C_0(L1_reg_ind))])./(sum(lambda_max));
+    C_1 = 0.975.*min([w_pos/N_o, w_neg/N_o, min(C_0(L0_reg_ind))])./L1_max;
 end
 C_1                 = C_1.*ones(P,1);
 C_1(~L1_reg_ind)    = 0;
@@ -186,25 +217,30 @@ C_1(~L1_reg_ind)    = 0;
 %Loss Constraint Parameters
 epsilon  = input.epsilon;
 M        = input.M(:);
+
+%Optimize Value of M
 if isnan(M)
-    M = sum(abs(X*lambda_max),2)+1.1*epsilon;
+    
+    Z_ub                = bsxfun(@times,X, lambda_ub');
+    Z_lb                = bsxfun(@times,X, lambda_lb');
+    Z_min               = bsxfun(@min,Z_lb, Z_ub);
+    Z_max               = bsxfun(@max,Z_lb, Z_ub);
+    Z_min_reg           = sort(Z_min(:,L0_reg_ind),2,'ascend');
+    S_min_reg           = sum(Z_min_reg(:,1:L0_max),2);
+    S_min_no_reg        = sum(Z_min(:,~L0_reg_ind),2);
+    M                   = 1.1*epsilon - S_min_reg -S_min_no_reg;
+   
+    Z_max_reg           = sort(Z_max(:,L0_reg_ind),2,'descend');
+    S_max_reg           = sum(Z_max_reg(:,1:L0_max),2);
+    S_max_no_reg        = sum(Z_max(:,~L0_reg_ind),2);
+    M_neg               = 1.1*epsilon + S_max_reg + S_max_no_reg;
+    M(neg_loss_con)     = M_neg(neg_loss_con);
+
 end
 
 XY  = bsxfun(@times,X,Y);
 
-%% Hard Constraint Preprocessing
-
-%bounded L0 norm
-L0_min          = input.L0_min;
-L0_max          = input.L0_max;
-if isnan(L0_min) || isinf(L0_min), L0_min = 0; end
-if isnan(L0_max) || isinf(L0_max), L0_max = P; end
-if L0_min > L0_max
-    error('user specified L0_min (=%d) which is greater than L0_max (=%d)\n',L0_min,L0_max)
-end
-L0_min          = max(ceil(L0_min),0);
-L0_max          = min(floor(L0_max),P);
-
+%% Error Constraints
 %total error
 err_min         = input.err_min;
 err_max         = input.err_max;
@@ -512,11 +548,19 @@ end
 if nargout == 2
     
     info = struct();
+    
+    %data
     info.X       = X;
     info.Y       = Y;
     info.Y_name  = Y_name;
     info.X_names = X_names;
     
+    %IP formulation
+    info.version = 'generic';
+    info.only_binary_features = only_binary_features;
+    info.no_custom_coefficients = no_custom_coefficients;
+    
+    %variable indices
     ii = 1;
     info.indices.lambdas = ii:(ii+P-1);                                    ii = ii+P;
     info.indices.alphas  = ii:(ii+n_alpha-1);                              ii = ii+n_alpha;
