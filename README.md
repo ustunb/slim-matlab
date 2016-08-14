@@ -8,7 +8,7 @@
 
 [SLIM](http://http//arxiv.org/abs/1502.04269/) is new machine learning method for learning scoring systems. It can learn models that are fully optimized for accuracy and sparsity, and that satisfy difficult constraints **without parameter tuning** (e.g. hard limits on model size, the true positive rate, the false positive rate).
 
-## Installation
+## Requirements
 
 ``slim-matlab`` was developed using MATLAB 2014b and CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
 
