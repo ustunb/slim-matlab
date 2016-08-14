@@ -47,7 +47,11 @@ results.model_string        = '';
 Solution = IP.Solution;
 if isfield(Solution,'x') %CPLEX may not have found a feasible solution yet
     
-    coefs      = Solution.x(info.indices.lambdas);
+    if info.version == 'binary'
+        coefs = Solution.x(info.indices.lambda_pos) + Solution.x(info.indices.lambda_neg);
+    else
+        coefs  = Solution.x(info.indices.lambdas);
+    end
     coefs      = coefs(:);
     
     %Identify Intercept (for model size calculations)
