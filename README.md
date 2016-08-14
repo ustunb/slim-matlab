@@ -1,18 +1,16 @@
-``slim_for_matlab`` is a package to create scoring systems using MATLAB and the CPLEX Optimization Studio.
+``slim-matlab`` is a package to create scoring systems using MATLAB and the CPLEX Optimization Studio.
 
 ## Introduction
 
-*Scoring systems* are simple classification models that let users make quick predictions by adding, subtracting and multiplying a few numbers:
+*Scoring systems* are simple models to make quick predictions by adding, subtracting and multiplying a few numbers:
 
 ![SLIM scoring system for the mushrooms dataset](https://github.com/ustunb/slim_for_matlab/blob/master/images/slim_mushroom.png)
 
-SLIM is a method to learn simple scoring systems (described in [this paper](http://http//arxiv.org/abs/1502.04269/)). SLIM scoring systems are fully optimized for accuracy and sparsity, and can directly satisfy difficult **without parameter tuning** (e.g. hard limits on the true positive rate, the false positive rate, and/or the model size).
-
-SLIM scoring systems are typically just as (if not more) accurate and/or sparse compared to models produced by popular methods such as [glmnet](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html). However, they may take more time to create since SLIM works by solving an [integer programming](http://en.wikipedia.org/wiki/Integer_programming) problem.
+[SLIM](http://http//arxiv.org/abs/1502.04269/) is new machine learning method for learning scoring systems. It can learn models that are fully optimized for accuracy and sparsity, and that satisfy difficult constraints **without parameter tuning** (e.g. hard limits on model size, the true positive rate, the false positive rate).
 
 ## Installation
 
-``slim_for_matlab`` was developed for MATLAB 2014b and CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
+``slim-matlab`` was developed using MATLAB 2014b and CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
 
 ### CPLEX 
 
