@@ -47,7 +47,7 @@ results.model_string        = '';
 Solution = IP.Solution;
 if isfield(Solution,'x') %CPLEX may not have found a feasible solution yet
     
-    if info.version == 'binary'
+    if strcmp(info.version, 'binary')
         coefs = Solution.x(info.indices.lambda_pos) + Solution.x(info.indices.lambda_neg);
     else
         coefs  = Solution.x(info.indices.lambdas);

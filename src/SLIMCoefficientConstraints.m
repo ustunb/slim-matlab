@@ -336,6 +336,18 @@ classdef SLIMCoefficientConstraints
             
         end
         
+        %% Subseting
+        
+        function subobj = subset(obj, idx)
+            
+            subobj = obj;
+            subobj.constraintArray = subobj.constraintArray(idx);
+            subobj.n_variables = numel(subobj.constraintArray);
+            subobj.checkRep()
+            
+        end
+        
+        
         %% Display, Warnings and CheckRep
         
         function print_warning(obj, msg)

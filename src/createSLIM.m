@@ -1,8 +1,7 @@
 function varargout = createSLIM(input)
-%Creates a Cplex IP whose solution will yield a SLIM scoring system
-%Requires a working installation of CPLEX.
+%Creates a Cplex IP object whose solution will yield a SLIM scoring system
 %
-%input is a struct() w must contain the following fields:
+%input is a struct with the following fields:
 %
 %Y          Nx1 vector of labels (-1 or 1 only)
 %X          NxP matrix of feature values (should include a column of 1s to acts as an intercept
@@ -521,7 +520,7 @@ ub(drop_ind)          = [];
 lb(drop_ind)          = [];
 A(:,drop_ind)         = [];
 
-%% Create CPLEX
+%% Return Values
 
 if nargout > 0
     
@@ -542,8 +541,6 @@ if nargout > 0
     varargout{1} = IP;
     
 end
-
-%% Debug Information
 
 if nargout == 2
     
