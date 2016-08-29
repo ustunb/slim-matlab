@@ -104,7 +104,7 @@ N_pos_o = N_pos;
 N_neg_o = N_neg;
 X_o     = X;
 [X, nY_pos, nY_neg, pos_loss_con, neg_loss_con, conflict_table, iu, ix]  = compress_data(X,Y);
-[N,P] = size(X);
+[N, P] = size(X);
 
 %% Default Settings
 
@@ -121,7 +121,7 @@ input = setdefault(input, 'pos_err_min', 0);
 input = setdefault(input, 'pos_err_max', 1);
 input = setdefault(input, 'neg_err_min', 0);
 input = setdefault(input, 'neg_err_max', 1);
-input = setdefault(input, 'add_intercept_constraint', true);
+input = setdefault(input, 'add_intercept_constraint', false);
 input = setdefault(input, 'add_conflict_constraint', false);
 
 %% Initialize Variables used in Creating IP Constraints

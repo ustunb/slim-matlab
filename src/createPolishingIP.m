@@ -107,7 +107,7 @@ input = setdefault(input, 'pos_err_min', 0);
 input = setdefault(input, 'pos_err_max', 1);
 input = setdefault(input, 'neg_err_min', 0);
 input = setdefault(input, 'neg_err_max', 1);
-input = setdefault(input, 'add_intercept_constraint', true);
+input = setdefault(input, 'add_intercept_constraint', false);
 input = setdefault(input, 'add_conflict_constraint', false);
 
 %% Initialize Variables to Create Matrices

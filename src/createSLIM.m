@@ -208,7 +208,7 @@ if ~isnan(input.C_1)
     assert(input.C_1 > 0, 'if user supplies C_1 then it must be positive');
     C_1 = input.C_1;
 else
-    C_1 = 0.975.*min([w_pos/N_o, w_neg/N_o, min(C_0(L0_reg_ind))])./L1_max;
+    C_1 = 0.975.*min([w_pos/N, w_neg/N, min(C_0(L0_reg_ind))])./L1_max;
 end
 C_1                 = C_1.*ones(P,1);
 C_1(~L1_reg_ind)    = 0;
@@ -233,7 +233,7 @@ if isnan(M)
     S_max_reg           = sum(Z_max_reg(:,1:L0_max),2);
     S_max_no_reg        = sum(Z_max(:,~L0_reg_ind),2);
     M_neg               = 1.1*epsilon + S_max_reg + S_max_no_reg;
-    M(neg_loss_con)     = M_neg(neg_loss_con);
+    M(neg_indices)     = M_neg(neg_indices);
 
 end
 
