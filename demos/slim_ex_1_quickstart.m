@@ -18,8 +18,8 @@ data_dir = [repo_dir,'data/'];
 addpath(code_dir);
 load([data_dir, 'breastcancer_processed_dataset.mat']);
 
-warning on SLIM:Coefficients    %'on' shows warnings about SLIM Coefficient Set
-warning on SLIM:CreateSLIM      %'on' shows warnings about SLIM IP Creation
+warning off SLIM:Coefficients    %'on' shows warnings about SLIM Coefficient Set
+warning off SLIM:CreateSLIM      %'on' shows warnings about SLIM IP Creation
 
 %% Setup SLIM input
 

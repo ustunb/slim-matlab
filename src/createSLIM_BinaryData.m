@@ -5,8 +5,8 @@ function varargout = createSLIM_BinaryData(input)
 %
 %input is a struct with following required fields:
 %
-%Y          Nx1 vector of labels (-1 or 1 only)
-%X          NxP matrix of features
+%Y          N x 1 vector of labels (-1 or 1 only)
+%X          N x P matrix of features
 %           Must include a column of 1s to act as the intercept
 %           All features must be binary
 %X_names    Px1 cell array of strings containing the names of the feature values
@@ -16,7 +16,8 @@ function varargout = createSLIM_BinaryData(input)
 %
 %Y_name             string/cell array containing the outcome variable name
 %coefConstraints    SLIMCoefficientConstraints object with variable_name matching X_names
-%                   Only integer constraints are permitted
+%                   only integer constraints are permitted
+%
 %C_0                sparsity penalty; must be a value between [0,1]
 %w_pos              misclassification cost for positive labels
 %w_neg              misclassification cost for negative labels

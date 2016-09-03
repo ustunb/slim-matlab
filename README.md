@@ -12,16 +12,17 @@
 
 ``slim-matlab`` was developed using MATLAB 2014b and CPLEX V12.6. It may work with earlier versions of MATLAB and/or CPLEX, but this has not been tested and will not be supported.
 
-### CPLEX 
+### Obtaining and Installing CPLEX
 
-*CPLEX* is cross-platform commercial optimization tool that can be called from MATLAB. It is freely available to students and faculty members at accredited institutions as part of the IBM Academic Initiative. To setup the latest version of CPLEX, you should:
+*CPLEX* is cross-platform commercial optimization solver that can be called from MATLAB. It is freely available to students and faculty members at accredited institutions as part of the IBM Academic Initiative. To setup the latest version of CPLEX, you should:
 
-1. Join the [IBM Academic Initiative](http://www-304.ibm.com/ibm/university/academic/pub/page/mem_join). Note that it may take up to a week to obtain approval.
-2. Download *IBM ILOG CPLEX Optimization Studio V12.6.1* (or higher) from the [software catalog](https://www-304.ibm.com/ibm/university/academic/member/softwaredownload)
+1. Join the [IBM Academic Initiative](https://ibm.onthehub.com/WebStore/Account/SelectVerificationType.aspx). Note that it may take up to 2 business days to obtain approval.
+
+2. Download *IBM ILOG CPLEX Optimization Studio V12.6* (or higher) from the [software catalog](https://ibm.onthehub.com/WebStore/OfferingDetails.aspx?o=6fcc1096-7169-e611-9420-b8ca3a5db7a1)
 3. Install the file on your computer. Note mac/unix users will [need to install a .bin file](http://www-01.ibm.com/support/docview.wss?uid=swg21444285).
 4. Add the CPLEX API to your MATLAB search path using ``pathtool``/``addpath`` [as shown here](http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/MATLAB/topics/gs_install.html)
 
-Please check the [CPLEX user manual](http://www-01.ibm.com/support/knowledgecenter/SSSA5P/welcome) or the [CPLEX forums](https://www.ibm.com/developerworks/community/forums/html/forum?id=11111111-0000-0000-0000-000000002059) if you have problems installing CPLEX.
+If you have problems installing CPLEX, check the [CPLEX user manual](http://www-01.ibm.com/support/knowledgecenter/SSSA5P/welcome) or the [CPLEX forums](https://www.ibm.com/developerworks/community/forums/html/forum?id=11111111-0000-0000-0000-000000002059).
 
 ## Citation 
 
