@@ -18,9 +18,9 @@
 
 *CPLEX* is cross-platform commercial optimization solver that can be called from MATLAB. It is freely available to students and faculty members at accredited institutions as part of the IBM Academic Initiative. To get the latest version of CPLEX, you should:
 
-1. Join the [IBM Academic Initiative](https://ibm.onthehub.com/WebStore/Account/SelectVerificationType.aspx).
+1. Join the [IBM Academic Initiative](https://ibm.onthehub.com/WebStore/Account/SelectVerificationType.aspx)
 2. Download *IBM ILOG CPLEX Optimization Studio V12.6* (or higher) from the [software catalog](https://ibm.onthehub.com/WebStore/OfferingDetails.aspx?o=6fcc1096-7169-e611-9420-b8ca3a5db7a1)
-3. Install *IBM ILOG CPLEX Optimization Studio V12.6* on your machine (note: Mac/Unix users will [need to install a from .bin file](http://www-01.ibm.com/support/docview.wss?uid=swg21444285).
+3. Install CPLEX on your machine. Note: Mac/Unix users will [need to install a from .bin file](http://www-01.ibm.com/support/docview.wss?uid=swg21444285)
 4. Add the CPLEX API to your MATLAB search path using ``pathtool``/``addpath`` [as shown here](http://www-01.ibm.com/support/knowledgecenter/SSSA5P_12.6.1/ilog.odms.cplex.help/CPLEX/MATLAB/topics/gs_install.html)
 
 If you have problems installing CPLEX, check the [CPLEX user manual](http://www-01.ibm.com/support/knowledgecenter/SSSA5P/welcome) or the [CPLEX forums](https://www.ibm.com/developerworks/community/forums/html/forum?id=11111111-0000-0000-0000-000000002059).
